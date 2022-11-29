@@ -1,0 +1,119 @@
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: 'acm-test01'
+  namespace: 'acm-test01'
+  labels:
+    cloud: 'GCP'
+    region: 'europe-west2'
+    vendor: OpenShift
+    cluster.open-cluster-management.io/clusterset: 'default'
+spec:
+  baseDomain: 624rx.gcp.redhatworkshops.io
+  clusterName: 'acm-test01'
+  controlPlaneConfig:
+    servingCertificates: {}
+  installAttemptsLimit: 1
+  installed: false
+  platform:
+    gcp:
+      credentialsSecretRef:
+        name: acm-test01-gcp-creds
+      region: europe-west2
+  provisioning:
+    installConfigSecretRef:
+      name: acm-test01-install-config
+    sshPrivateKeySecretRef:
+      name: acm-test01-ssh-private-key
+    imageSetRef:
+       #quay.io/openshift-release-dev/ocp-release:4.11.17-x86_64
+      name: img4.11.17-x86-64-appsub
+  pullSecretRef:
+    name: acm-test01-pull-secret
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  labels:
+    cloud: Google
+    region: europe-west2
+    name: 'acm-test01'
+    vendor: OpenShift
+    cluster.open-cluster-management.io/clusterset: 'default'
+    env: 'test'
+  name: 'acm-test01'
+spec:
+  hubAcceptsClient: true
+---
+apiVersion: hive.openshift.io/v1
+kind: MachinePool
+metadata:
+  name: acm-test01-worker
+  namespace: 'acm-test01'
+spec:
+  clusterDeploymentRef:
+    name: 'acm-test01'
+  name: worker
+  platform:
+    gcp:
+      type: n1-standard-4
+  replicas: 0
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: acm-test01-pull-secret
+  namespace: 'acm-test01'
+stringData:
+  .dockerconfigjson: # injected on create
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: acm-test01-install-config
+  namespace: 'acm-test01'
+type: Opaque
+data:
+  # Base64 encoding of install-config yaml
+  install-config.yaml: YXBpVmVyc2lvbjogdjEKbWV0YWRhdGE6CiAgbmFtZTogJ2FjbS10ZXN0MDEnCmJhc2VEb21haW46IDYyNHJ4LmdjcC5yZWRoYXR3b3Jrc2hvcHMuaW8KY29udHJvbFBsYW5lOgogIGFyY2hpdGVjdHVyZTogYW1kNjQKICBoeXBlcnRocmVhZGluZzogRW5hYmxlZAogIG5hbWU6IG1hc3RlcgogIHJlcGxpY2FzOiAzCiAgcGxhdGZvcm06CiAgICBnY3A6CiAgICAgIHR5cGU6IG4xLXN0YW5kYXJkLTQKY29tcHV0ZToKLSBoeXBlcnRocmVhZGluZzogRW5hYmxlZAogIGFyY2hpdGVjdHVyZTogYW1kNjQKICBuYW1lOiAnd29ya2VyJwogIHJlcGxpY2FzOiAwCiAgcGxhdGZvcm06CiAgICBnY3A6CiAgICAgIHR5cGU6IG4xLXN0YW5kYXJkLTQKbmV0d29ya2luZzoKICBuZXR3b3JrVHlwZTogT3BlblNoaWZ0U0ROCiAgY2x1c3Rlck5ldHdvcms6CiAgLSBjaWRyOiAxMC4xMjguMC4wLzE0CiAgICBob3N0UHJlZml4OiAyMwogIG1hY2hpbmVOZXR3b3JrOgogIC0gY2lkcjogMTAuMC4wLjAvMTYKICBzZXJ2aWNlTmV0d29yazoKICAtIDE3Mi4zMC4wLjAvMTYKcGxhdGZvcm06CiAgZ2NwOgogICAgcHJvamVjdElEOiBvcGVuZW52LTYyNHJ4CiAgICByZWdpb246IGV1cm9wZS13ZXN0MgpwdWxsU2VjcmV0OiAiIiAjIHNraXAsIGhpdmUgd2lsbCBpbmplY3QgYmFzZWQgb24gaXQncyBzZWNyZXRzCnNzaEtleTogfC0KICAgIHNzaC1yc2EgQUFBQUIzTnphQzF5YzJFQUFBQURBUUFCQUFBQmdRRG1rM0xUaWVDZVFzUW5ZeE96R05CUHNpZ1BDMGE0M1M0ZnY1Qml1ZmdLQmZDVVpTTW81WHZHVXY3aUV3SDc1TnhmNXovcXUwVHNReS9HenEzVGQyS0xnSUdzT1BwVHdWclRTU0tIZXhDU1FOVVBrQ2IzNzFiRG5rclp3cUFsN2xLMngzQXAxQ0lFeXpva3VWOG9ZV1o5QUJtMVZMdWEzUXZaQ3ZZb0VHRElqQnAyZWR4ZGREczFMYUhPZjRVZllOQWF0TFJHNmw4a0l5SStwZ1RWcitQZ0RsUWJPd0JXS1FIT29yTTBsRUorbFlUQ3ZtTW1PNURsTE5VeHJiS3ZDbVRRYW11MVU4aW1MTDYrRHROT1lUcWFxZlpIbmRNWUJDR3M0NFBKMkwwVW90MitodmpoVWR0aVZJRkhCM2xnL2J1SndlYmxnZUxSdmxjTGFCWTVlb1laaUt3OVhrd1drSUZsS3lUNW5yY29DdU11S05lbjRWeEIzakRVRXBJcXdoNFlvNjVKZTFLQVcvZ0w2aVFhZFhmbEdJaWNHVmFFR3kwS1F3dkpoSE9scHFGNytna2tTYUVMUGttV0RFT0FRNUEya3d6T2E4TmRNeGxBMXdDR21DdUJ4R1pUU0pRdmhHQUFuRjlIMk9BYzRzQ1RjWWt4QzNvOVFSUUxIS0VTc1Y4PSBqYXVza2FsbkBqYXVza2Fsbi1tYWMK
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: acm-test01-ssh-private-key
+  namespace: 'acm-test01'
+stringData:
+  ssh-privatekey: # injected on create
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: acm-test01-gcp-creds
+  namespace: 'acm-test01'
+stringData:
+  osServiceAccount.json: # injected on create
+---
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: 'acm-test01'
+  namespace: 'acm-test01'
+spec:
+  clusterName: 'acm-test01'
+  clusterNamespace: 'acm-test01'
+  clusterLabels:
+    cloud: Google
+    vendor: OpenShift
+  applicationManager:
+    enabled: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: true
+  certPolicyController:
+    enabled: true
+  iamPolicyController:
+    enabled: true
