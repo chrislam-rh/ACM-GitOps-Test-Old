@@ -8,4 +8,4 @@ policyDefaults:
 policies:
   - name: config-data
     manifests:
-      - path: install-logging.yaml
+      - path: log-install-policy
