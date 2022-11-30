@@ -3,7 +3,7 @@ kind: PolicyGenerator
 metadata:
   name: install-logging-operator
 policyDefaults:
-  namespace: policies
+  namespace: openshift-logging
   placement:
     clusterSelectors:
       vendor: "OpenShift"
@@ -11,4 +11,4 @@ policyDefaults:
 policies:
   - name: install-logging-operator
     manifests:
-      - path: logging-operator
+      - path: logging-operator.yaml
