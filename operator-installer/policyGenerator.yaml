@@ -11,4 +11,4 @@ policyDefaults:
 policies:
   - name: install-logging-operator
     manifests:
-      - path: logging-operator.yaml
+      - path: logging-operator
