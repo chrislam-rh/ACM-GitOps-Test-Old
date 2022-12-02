@@ -1,0 +1,20 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: install-logging-operator
+policyDefaults:
+  namespace: openshift-logging
+  placement:
+    clusterSelectors:
+      vendor: "OpenShift"
+  remediationAction: enforce
+policies:
+  - name: create-namespace
+    manifests:
+      - path: namesapce.yaml
+  - name: create-opgroup
+    manifests:
+      - path: operatorgroup.yaml
+  - name: create-sub
+    manifests:
+      - path: subscription.yaml
