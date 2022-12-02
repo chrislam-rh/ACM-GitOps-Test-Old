@@ -5,4 +5,4 @@ metadata:
 policyDefaults:
   placement:
     clusterSelectors:
-      env: "dev"
+      env: "test"
