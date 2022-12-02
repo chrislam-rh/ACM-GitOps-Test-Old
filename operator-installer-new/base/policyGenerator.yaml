@@ -11,7 +11,7 @@ policyDefaults:
 policies:
   - name: create-namespace
     manifests:
-      - path: namesapce.yaml
+      - path: namespace.yaml
   - name: create-opgroup
     manifests:
       - path: operatorgroup.yaml
