@@ -1,0 +1,8 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: install-logging-operator
+policyDefaults:
+  placement:
+    clusterSelectors:
+      env: "dev"
