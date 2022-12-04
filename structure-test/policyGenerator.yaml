@@ -3,7 +3,7 @@ kind: PolicyGenerator
 metadata:
   name: policy-generator-kustomize
 policyDefaults:
-  namespace: dev-simulation
+  namespace: acm-test01
   # Put each object in its own ConfigurationPolicy in the Policy
   consolidateManifests: false
 policies:
