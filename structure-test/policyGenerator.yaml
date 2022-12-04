@@ -3,10 +3,10 @@ kind: PolicyGenerator
 metadata:
   name: policy-generator-kustomize
 policyDefaults:
-  namespace: my-policies
+  namespace: dev-simluation
   # Put each object in its own ConfigurationPolicy in the Policy
   consolidateManifests: false
 policies:
-- name: myapp
+- name: busybox-policy
   manifests:
     - path: busybox-policy/
