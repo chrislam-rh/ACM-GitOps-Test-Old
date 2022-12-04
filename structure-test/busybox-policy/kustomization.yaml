@@ -1,5 +1,5 @@
 resources:
-- dev
-- prod
+- ./dev/kustomization.yaml
+- ./prod/kustomization.yaml
   
 
