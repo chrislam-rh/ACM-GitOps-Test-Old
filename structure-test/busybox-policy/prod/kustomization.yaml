@@ -1,0 +1,7 @@
+resources:
+- ../base
+namePrefix: prod-
+namespace: prod-simulation
+labels:
+- pairs:
+    env: prod

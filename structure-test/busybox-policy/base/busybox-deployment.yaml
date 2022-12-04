@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox-deployment
+    app.kubernetes.io/component: busybox-deployment
+    app.kubernetes.io/instance: busybox-deployment
+    app.kubernetes.io/part-of: busybox-deployment
+    app.openshift.io/runtime: redhat
+  name: busybox-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox-deployment
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: busybox-deployment
+        deploymentconfig: busybox-deployment
+    spec:
+      containers:
+      - image: registry.access.redhat.com/ubi8/ubi:latest
+        imagePullPolicy: Always
+        name: busybox-deployment
+        command:
+        - /bin/sh
+        - -c
+        - |
+          sleep infinity
+        resources: {}

@@ -1,0 +1,12 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: policy-generator-kustomize
+policyDefaults:
+  namespace: my-policies
+  # Put each object in its own ConfigurationPolicy in the Policy
+  consolidateManifests: false
+policies:
+- name: myapp
+  manifests:
+    - path: busybox-policy/

@@ -1,0 +1,7 @@
+resources:
+- ../base
+namePrefix: dev-
+namespace: dev-simulation
+labels:
+- pairs:
+    env: dev
