@@ -2,10 +2,6 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
   name: policy-generator-kustomize
-policyDefaults:
-  namespace: acm-test01
-  # Put each object in its own ConfigurationPolicy in the Policy
-  consolidateManifests: false
 policies:
 - name: busybox-policy
   manifests:

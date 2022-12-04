@@ -1,5 +1,5 @@
 resources:
-- ./dev
-- ./prod
+- dev
+- prod
   
 
